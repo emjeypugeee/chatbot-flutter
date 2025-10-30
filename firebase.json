@@ -1,0 +1,1 @@
+{"flutter":{"platforms":{"android":{"default":{"projectId":"track-fund","appId":"1:789466364639:android:5d19817b18f5144a76876a","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"track-fund","configurations":{"android":"1:789466364639:android:5d19817b18f5144a76876a","ios":"1:789466364639:ios:b16de518d138f96476876a"}}}}}}

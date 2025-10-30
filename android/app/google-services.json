@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "789466364639",
+    "project_id": "track-fund",
+    "storage_bucket": "track-fund.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:789466364639:android:5d19817b18f5144a76876a",
+        "android_client_info": {
+          "package_name": "com.example.chatbot"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDvN5HxjblYStVbDwITxZ1-4EocWpF4crs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
