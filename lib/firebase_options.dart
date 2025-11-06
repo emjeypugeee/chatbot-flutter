@@ -3,6 +3,7 @@
 import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
 import 'package:flutter/foundation.dart'
     show defaultTargetPlatform, kIsWeb, TargetPlatform;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 /// Default [FirebaseOptions] for use with your Firebase apps.
 ///
@@ -49,16 +50,16 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDvN5HxjblYStVbDwITxZ1-4EocWpF4crs',
+  static final FirebaseOptions android = FirebaseOptions(
+    apiKey: dotenv.env['DATABASE_URL'] ?? '',
     appId: '1:789466364639:android:5d19817b18f5144a76876a',
     messagingSenderId: '789466364639',
     projectId: 'track-fund',
     storageBucket: 'track-fund.firebasestorage.app',
   );
 
-  static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyCEbdfyhOW6kk08pNP5OAemW5FVuSvj8Lw',
+  static FirebaseOptions ios = FirebaseOptions(
+    apiKey: dotenv.env['DATABASE_URL'] ?? '',
     appId: '1:789466364639:ios:b16de518d138f96476876a',
     messagingSenderId: '789466364639',
     projectId: 'track-fund',

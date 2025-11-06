@@ -4,14 +4,36 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthProvider with ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   bool _isLoading = false;
   String _errorMessage = '';
+  String? _nickname;
 
   // Getters
-  User? get currentUser => _auth.currentUser;
+  // User? get currentUser => _auth.currentUser; // <-- THIS LINE WAS REMOVED
   bool get isLoading => _isLoading;
   String get errorMessage => _errorMessage;
+  User? _user;
+  String? get nickname => _nickname;
+
+  AuthProvider() {
+    _auth.authStateChanges().listen((User? user) {
+      _user = user;
+      if (user != null) {
+        // 3. If user logs IN, fetch their profile
+        _fetchAndStoreNickname(user.uid);
+      } else {
+        // 4. If user logs OUT, clear the nickname
+        _nickname = null;
+      }
+      notifyListeners();
+    });
+  }
+
+  // This is the correct getter, which uses the provider's state
+  User? get currentUser => _user;
+  bool get isLoggedIn => _user != null;
 
   Future<bool> login(String email, String password) async {
     setLoading(true);
@@ -31,10 +53,22 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
+  Future<void> _fetchAndStoreNickname(String uid) async {
+    try {
+      final docSnapshot = await _firestore.collection('users').doc(uid).get();
+      if (docSnapshot.exists) {
+        _nickname = docSnapshot.data()?['name'] as String?;
+        notifyListeners(); // Notify listeners *after* getting the name
+      }
+    } catch (e) {
+      print("Error fetching nickname: $e");
+    }
+  }
+
   // New method to read user data from Firestore
   // It returns a Map<String, dynamic> of the user's document data.
   Future<Map<String, dynamic>?> getUserData() async {
-    final user = currentUser;
+    final user = currentUser; // This now correctly uses the _user variable
     if (user == null) {
       setError("User is not logged in.");
       return null;
@@ -142,5 +176,10 @@ class AuthProvider with ChangeNotifier {
       default:
         return 'Registration failed. Please try again';
     }
+  }
+
+  Future<void> signOut() async {
+    await _auth.signOut();
+    // notifyListeners() is already called by the authStateChanges listener
   }
 }
